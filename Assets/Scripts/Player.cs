@@ -12,8 +12,11 @@ public class Player : MonoBehaviour
     [SerializeField] float positionPitchFactor = -5f;
     [SerializeField] float controlPitchFactor = -30f;
 
-    [SerializeField] float positionYawFactor = -5f;
-    [SerializeField] float controlRollFactor = -60f;
+    [SerializeField] float positionYawFactor = 5f;
+    [SerializeField] float controlRollFactor = -30f;
+
+    [SerializeField] float maximumHorizontal = 5.0f;
+    [SerializeField] float maximumVertical = 2.0f;    
 
     float xThrow, yThrow;
 
@@ -38,10 +41,10 @@ public class Player : MonoBehaviour
         float yOffset = yThrow * ySpeed * Time.deltaTime;
 
         float rawXPos = transform.localPosition.x + xOffset;
-        float clampedXPos = Mathf.Clamp(rawXPos, -2.0f, 2.0f);
+        float clampedXPos = Mathf.Clamp(rawXPos, -maximumHorizontal, maximumHorizontal);
 
         float rawYPos = transform.localPosition.y + yOffset;
-        float clampedYPos = Mathf.Clamp(rawYPos, -1.2f, 1.2f);
+        float clampedYPos = Mathf.Clamp(rawYPos, -maximumVertical, maximumVertical);
 
         transform.localPosition = new Vector3(clampedXPos, clampedYPos, transform.localPosition.z);
     }
