@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     [SerializeField] float maximumHorizontal = 5.0f;
     [SerializeField] float maximumVertical = 2.0f;    
 
+    
+
     float xThrow, yThrow;
 
     void Start()
@@ -59,5 +61,9 @@ public class Player : MonoBehaviour
         float roll = xThrow * controlRollFactor;
 
         transform.localRotation = Quaternion.Euler(pitch, yaw, roll);
+    }
+
+    void OnPlayerDeath() {
+        //deathSfx.setActive(true);
     }
 }

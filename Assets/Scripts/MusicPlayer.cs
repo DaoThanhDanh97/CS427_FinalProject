@@ -8,7 +8,16 @@ public class MusicPlayer : MonoBehaviour
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        int numMusicPlayers = FindObjectsOfType<MusicPlayer>().Length;
+
+        if (numMusicPlayers > 1)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
     // Start is called before the first frame update
@@ -19,7 +28,10 @@ public class MusicPlayer : MonoBehaviour
 
     void LoadFirstScreen()
     {
-        SceneManager.LoadScene(1);
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            SceneManager.LoadScene(1);
+        }
     }
 
     // Update is called once per frame
