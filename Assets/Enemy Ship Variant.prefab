@@ -26,6 +26,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathFX: {fileID: 0}
+  parent: {fileID: 0}
+  enemyScore: 20
 --- !u!1001 &5544359768234669682
 PrefabInstance:
   m_ObjectHideFlags: 0

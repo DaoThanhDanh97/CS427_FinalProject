@@ -16,11 +16,14 @@ public class Player : MonoBehaviour
     [SerializeField] float controlRollFactor = -30f;
 
     [SerializeField] float maximumHorizontal = 5.0f;
-    [SerializeField] float maximumVertical = 2.0f;    
+    [SerializeField] float maximumVertical = 2.0f;
 
+    [SerializeField] GameObject[] guns;
     
 
     float xThrow, yThrow;
+
+    bool isAlive = true;
 
     void Start()
     {
@@ -30,8 +33,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ProcessTranslation();
-        ProcessRotation();
+        if (isAlive)
+        {
+            ProcessTranslation();
+            ProcessRotation();
+            ProcessFiring();
+        }
     }
 
     private void ProcessTranslation()
@@ -65,5 +72,28 @@ public class Player : MonoBehaviour
 
     void OnPlayerDeath() {
         //deathSfx.setActive(true);
+        isAlive = false;
+    }
+
+    void ProcessFiring()
+    {
+        if (CrossPlatformInputManager.GetButton("Fire"))
+        {
+            SetGunActive(true);
+        }
+        else
+        {
+            SetGunActive(false);
+        }
+    }
+
+    void SetGunActive(bool isActive)
+    {
+        print(isActive);
+        foreach(GameObject gun in guns)
+        {
+            var emissionModule = gun.GetComponent<ParticleSystem>().emission;
+            emissionModule.enabled = isActive;
+        }
     }
 }
