@@ -19,7 +19,9 @@ public class Player : MonoBehaviour
     [SerializeField] float maximumVertical = 2.0f;
 
     [SerializeField] GameObject[] guns;
-    
+
+    GameObject mainCamera;
+    Transform mainCameraTransform;
 
     float xThrow, yThrow;
 
@@ -27,7 +29,9 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        
+        // mainCamera = FindObjectOfType<Main Camera>();
+        mainCamera = (GameObject) GameObject.FindWithTag("MainCamera");
+        mainCameraTransform = mainCamera.GetComponent<Transform>();
     }
 
     // Update is called once per frame
@@ -56,6 +60,8 @@ public class Player : MonoBehaviour
         float clampedYPos = Mathf.Clamp(rawYPos, -maximumVertical, maximumVertical);
 
         transform.localPosition = new Vector3(clampedXPos, clampedYPos, transform.localPosition.z);
+
+        //mainCameraTransform.localPosition = new Vector3(mainCameraTransform.localPosition.x, mainCameraTransform.localPosition.y, mainCameraTransform.localPosition.z + 3);
     }
 
     void ProcessRotation()
@@ -67,7 +73,7 @@ public class Player : MonoBehaviour
         float yaw = transform.localPosition.x * positionYawFactor;
         float roll = xThrow * controlRollFactor;
 
-        transform.localRotation = Quaternion.Euler(pitch, yaw, roll);
+        transform.localRotation = Quaternion.Euler(0.0f, yaw, roll);
     }
 
     void OnPlayerDeath() {
