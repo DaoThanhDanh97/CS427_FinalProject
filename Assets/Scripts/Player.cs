@@ -9,12 +9,6 @@ public class Player : MonoBehaviour
     [Tooltip("In ms^-1")] [SerializeField] float xSpeed = 4f;
     [Tooltip("In ms^-1")] [SerializeField] float ySpeed = 3f;
 
-    [SerializeField] float positionPitchFactor = -5f;
-    [SerializeField] float controlPitchFactor = -30f;
-
-    [SerializeField] float positionYawFactor = 5f;
-    [SerializeField] float controlRollFactor = -30f;
-
     [SerializeField] float maximumHorizontal = 5.0f;
     [SerializeField] float maximumVertical = 2.0f;
 
@@ -22,6 +16,8 @@ public class Player : MonoBehaviour
 
     GameObject mainCamera;
     Transform mainCameraTransform;
+
+    Scoreboard scoreBoard;
 
     float xThrow, yThrow;
 
@@ -32,6 +28,7 @@ public class Player : MonoBehaviour
         // mainCamera = FindObjectOfType<Main Camera>();
         mainCamera = (GameObject) GameObject.FindWithTag("MainCamera");
         mainCameraTransform = mainCamera.GetComponent<Transform>();
+        scoreBoard = FindObjectOfType<Scoreboard>();
     }
 
     // Update is called once per frame
@@ -40,7 +37,7 @@ public class Player : MonoBehaviour
         if (isAlive)
         {
             ProcessTranslation();
-            ProcessRotation();
+            //ProcessRotation();
             ProcessFiring();
         }
     }
@@ -57,24 +54,13 @@ public class Player : MonoBehaviour
         float clampedXPos = Mathf.Clamp(rawXPos, -maximumHorizontal, maximumHorizontal);
 
         float rawYPos = transform.localPosition.y + yOffset;
-        float clampedYPos = Mathf.Clamp(rawYPos, -maximumVertical, maximumVertical);
+        float clampedYPos = Mathf.Clamp(rawYPos, -maximumVertical, 5 * maximumVertical);
 
         transform.localPosition = new Vector3(clampedXPos, clampedYPos, transform.localPosition.z);
 
-        //mainCameraTransform.localPosition = new Vector3(mainCameraTransform.localPosition.x, mainCameraTransform.localPosition.y, mainCameraTransform.localPosition.z + 3);
+        mainCameraTransform.localPosition = new Vector3(mainCameraTransform.localPosition.x, mainCameraTransform.localPosition.y, mainCameraTransform.localPosition.z + 3);
     }
 
-    void ProcessRotation()
-    {
-        float pitchByPosition = transform.localPosition.y * positionPitchFactor;
-        float pitchByControl = yThrow * controlPitchFactor;
-        float pitch = pitchByPosition + pitchByControl;
-
-        float yaw = transform.localPosition.x * positionYawFactor;
-        float roll = xThrow * controlRollFactor;
-
-        transform.localRotation = Quaternion.Euler(0.0f, yaw, roll);
-    }
 
     void OnPlayerDeath() {
         //deathSfx.setActive(true);
@@ -83,19 +69,12 @@ public class Player : MonoBehaviour
 
     void ProcessFiring()
     {
-        if (CrossPlatformInputManager.GetButton("Fire"))
-        {
-            SetGunActive(true);
-        }
-        else
-        {
-            SetGunActive(false);
-        }
+        SetGunActive(CrossPlatformInputManager.GetButton("Fire"));
     }
 
     void SetGunActive(bool isActive)
     {
-        print(isActive);
+        //print(isActive);
         foreach(GameObject gun in guns)
         {
             var emissionModule = gun.GetComponent<ParticleSystem>().emission;

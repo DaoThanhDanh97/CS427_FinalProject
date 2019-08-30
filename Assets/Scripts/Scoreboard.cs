@@ -10,6 +10,8 @@ public class Scoreboard : MonoBehaviour
 
     [SerializeField] int scorePerFrame = 1;
 
+    int levelAcheivedScore = 0;
+
     private void Awake()
     {
         scoreText = GetComponent<Text>();
@@ -19,7 +21,7 @@ public class Scoreboard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        ResetScore();
     }
 
     // Update is called once per frame
@@ -31,6 +33,12 @@ public class Scoreboard : MonoBehaviour
     public void ScoreHit(int hitScore)
     {
         score += hitScore;
+        scoreText.text = score.ToString();
+    }
+
+    public void ResetScore()
+    {
+        score = levelAcheivedScore;
         scoreText.text = score.ToString();
     }
 }
